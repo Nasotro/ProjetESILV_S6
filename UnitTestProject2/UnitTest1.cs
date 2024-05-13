@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using FormsProjetS6;
+using System.Collections.Generic;
 
-namespace UnitTestProject1
+namespace UnitTestProject2
 {
     [TestClass]
     public class UnitTest1
@@ -10,6 +11,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestDijkstra()
         {
+            DataBase.Generate();
             // Création des villes pour le test
             Commande.Ville villeA = new Commande.Ville("Ville A");
             Commande.Ville villeB = new Commande.Ville("Ville B");

@@ -132,7 +132,7 @@ namespace FormsProjetS6
         }
 
         /// <summary>
-        /// Méthode pour charger les données depuis un fichier CSV
+        /// Méthode pour charger les données des villes depuis un fichier CSV
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
