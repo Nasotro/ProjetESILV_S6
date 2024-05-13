@@ -9,12 +9,19 @@ namespace FormsProjetS6
 {
     internal class Commande
     {
+        /// <summary>
+        /// Les propriétés et les champs de la classe
+        /// </summary>
         protected Adresse adresseA, adresseB;
         protected float prix;
         protected Chauffeur chauffeur;
         protected DateTime date;
         protected Vehicule vehicule;
         Client client;
+
+        /// <summary>
+        /// Propriétés de la classe
+        /// </summary>
         public string Chemin { get; set; }
         public Client Client { get { return client; } set { client = value; } }
         public float Distance { get; set; }
@@ -23,6 +30,15 @@ namespace FormsProjetS6
         {
             get { return (int)(TempsEnMin / 60) + "h" + (TempsEnMin % 60); }
         }
+
+        /// <summary>
+        /// Constructeurs de la classe
+        /// </summary>
+        /// <param name="adresseA"></param>
+        /// <param name="adresseB"></param>
+        /// <param name="chauffeur"></param>
+        /// <param name="date"></param>
+        /// <param name="c"></param>
         public Commande(Adresse adresseA, Adresse adresseB, Chauffeur chauffeur, DateTime date, Client c)
         {
             this.adresseA = adresseA;
@@ -54,8 +70,15 @@ namespace FormsProjetS6
         }
 
 
+        /// <summary>
+        /// Classe interne représentant une ville
+        /// </summary>
         public class Ville : IComparable<Ville> 
         {
+
+            /// <summary>
+            /// Les propriétés de la ville
+            /// </summary>
             public string Name { get; set; }
             public bool IsOut { get; set; } = false;
             public string Chemin { get; set; } = "";
@@ -64,12 +87,21 @@ namespace FormsProjetS6
             public int CheminLePlusCourt { get; set; } = int.MaxValue;
             public int TempsLePlusCourt { get; set; } = 0;
             public Ville VillePrecedente { get; set; } = null;
+
+            /// <summary>
+            /// Constructeur de la classe Ville
+            /// </summary>
+            /// <param name="name"></param>
             public Ville(string name)
             {
                 Name = name;
                 IsOut = false;
                 Chemin = "";
             }
+
+            /// <summary>
+            /// Méthode pour réinitialiser les valeurs de la ville
+            /// </summary>
             public void Reset()
             {
                 CheminLePlusCourt = int.MaxValue;
@@ -78,15 +110,32 @@ namespace FormsProjetS6
                 IsOut = false;
                 Chemin = "";
             }
+
+            /// <summary>
+            /// Méthode pour afficher le nom de la ville
+            /// </summary>
+            /// <returns></returns>
             public override string ToString()
             {
                 return Name;
             }
+
+            /// <summary>
+            /// Méthode pour comparer deux villes
+            /// </summary>
+            /// <param name="other"></param>
+            /// <returns></returns>
             public int CompareTo(Ville other)
             {
                 return Name.CompareTo(other.Name);
             }
         }
+
+        /// <summary>
+        /// Méthode pour charger les données depuis un fichier CSV
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public List<Ville> loadCSV(string filePath)
         {
             var villes = new List<Ville>();
@@ -129,6 +178,12 @@ namespace FormsProjetS6
         }
 
 
+        /// <summary>
+        /// Méthode pour trouver le chemin le plus court entre deux adresses
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public string[] CheminLePlusCourt(Adresse a, Adresse b)
         {
             var cities = loadCSV("Distances.csv"); // Replace with the actual path to your CSV file
@@ -151,6 +206,12 @@ namespace FormsProjetS6
             return new string[3] { ""+endCity.CheminLePlusCourt, ""+endCity.TempsLePlusCourt, endCity.Chemin + " | " + endCity.Name + " | " };
         }
 
+
+        /// <summary>
+        /// Méthode implémentant l'algorithme de Dijkstra
+        /// </summary>
+        /// <param name="startCity"></param>
+        /// <param name="cities"></param>
         public void Dijkstra(Ville startCity, List<Ville> cities)
         {
             cities.ForEach(x => x.Reset());
@@ -182,6 +243,10 @@ namespace FormsProjetS6
             }
         }
 
+
+        /// <summary>
+        /// Propriétés de la classe Commande
+        /// </summary>
         public Adresse AdresseA
         {
             get { return adresseA; }
@@ -218,6 +283,11 @@ namespace FormsProjetS6
             set { date = value; }
         }
 
+
+        /// <summary>
+        /// Méthode pour afficher les détails de la commande
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"Commande: \n" +

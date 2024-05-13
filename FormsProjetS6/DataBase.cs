@@ -14,6 +14,9 @@ namespace FormsProjetS6
 {
     internal static class DataBase
     {
+        /// <summary>
+        /// Listes pour stocker les données
+        /// </summary>
         public static List<Commande> commandes = new List<Commande>();
         public static List<Client> clients = new List<Client>();
         public static List<Salarie> salaries = new List<Salarie>();
@@ -36,8 +39,15 @@ namespace FormsProjetS6
             "Avignon",
             "Monaco"
         };
+
+        /// <summary>
+        /// Organigramme de l'entreprise
+        /// </summary>
         public static Salarie Organigramme;
 
+        /// <summary>
+        /// Méthode pour générer des données aléatoires
+        /// </summary>
         public static void Generate()
         {
             Random rnd = new Random();
@@ -132,6 +142,10 @@ namespace FormsProjetS6
 
         }
 
+        /// <summary>
+        /// Méthode pour obtenir les statistiques
+        /// </summary>
+        /// <returns></returns>
         public static string GetStatistics()
         {
             if (commandes == null || commandes.Count == 0 || clients == null || clients.Count == 0 || salaries == null || salaries.Count == 0 || vehicules == null || vehicules.Count == 0 || Chauffeurs == null || Chauffeurs.Count == 0)
@@ -197,11 +211,19 @@ namespace FormsProjetS6
                    $"Nombre de clients avec au moins 1 commande : {uniqueClients}";
         }
 
+        /// <summary>
+        /// Méthode pour formater le temps
+        /// </summary>
+        /// <param name="temps"></param>
+        /// <returns></returns>
         public static string formatTemps(float temps)
         {
             return (int)(temps / 60) + "h" + (temps % 60);
         }
 
+        /// <summary>
+        /// Méthode pour créer des demandes pour les salariés
+        /// </summary>
         public static void CreateSalarieDemandes()
         {
             Random rnd = new Random();
@@ -262,6 +284,12 @@ namespace FormsProjetS6
             salaries = all_salaries;
             Organigramme = mrDupont;
         }
+
+        /// <summary>
+        /// Méthode pour créer un ensemble aléatoire de commandes
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public static List<Commande> createCommandes(int n = 20)
         {
             // A list to store the created Commandes
@@ -306,6 +334,14 @@ namespace FormsProjetS6
             }
             return commandes;
         }
+
+        /// <summary>
+        /// Méthode pour générer une date aléatoire entre deux dates données
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="rand"></param>
+        /// <returns></returns>
         public static DateTime GenerateRandomDate(DateTime start, DateTime end, Random rand)
         {
             long range = (long)((end - start).TotalMilliseconds);
@@ -315,6 +351,12 @@ namespace FormsProjetS6
 
             return randomDate;
         }
+
+        /// <summary>
+        /// Méthode pour créer l'organigramme de l'entreprise
+        /// </summary>
+        /// <param name="tete"></param>
+        /// <returns></returns>
         static Salarie CreateOrganigramme(Salarie tete)
         {
             Random rnd = new Random();
@@ -339,6 +381,15 @@ namespace FormsProjetS6
 
             return tete;
         }
+
+        /// <summary>
+        /// Méthode pour afficher l'organigramme de l'entreprise
+        /// </summary>
+        /// <param name="tete"></param>
+        /// <param name="decal"></param>
+        /// <param name="last"></param>
+        /// <param name="prefixe"></param>
+        /// <returns></returns>
         public static string ShowOrganigramme(Salarie tete, int decal = 0, bool last = false, string prefixe = "")
         {
             if (tete == null)
@@ -358,19 +409,41 @@ namespace FormsProjetS6
             return r;
         }
 
+
+        /// <summary>
+        /// Méthode pour obtenir les noms des chauffeurs
+        /// </summary>
+        /// <returns></returns>
         public static List<string> noms_chauffeurs()
         {
             return Chauffeurs.Select(s => s.noms).ToList();
         }
+
+        /// <summary>
+        /// Méthode pour obtenir les noms des chauffeurs disponibles à une date donnée
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static List<string> noms_chauffeursDispo(DateTime date)
         {
             return Chauffeurs.Where(x => x.estDispo(date)).Select(s => s.noms).ToList();
         }
+
+        /// <summary>
+        /// Méthode pour obtenir les noms de tous les salariés
+        /// </summary>
+        /// <returns></returns>
         public static List<string> noms_salaries()
         {
             return salaries.Select(s=>s.noms).ToList();
         }
 
+        /// <summary>
+        /// Méthode pour obtenir les noms des salariés qui ne sont pas inférieurs à un salarié donné dans l'organigramme
+        /// </summary>
+        /// <param name="salarie"></param>
+        /// <param name="allSalaries"></param>
+        /// <returns></returns>
         public static List<string> noms_salaries_non_inferieurs(Salarie salarie, List<Salarie> allSalaries = null)
         {
             if (allSalaries == null)
@@ -397,6 +470,13 @@ namespace FormsProjetS6
 
             return names.Distinct().ToList();
         }
+
+        /// <summary>
+        /// Méthode pour vérifier si un salarié est dans le sous-arbre d'un autre salarié dans l'organigramme
+        /// </summary>
+        /// <param name="salarie"></param>
+        /// <param name="tete"></param>
+        /// <returns></returns>
         public static bool IsInSubtree(Salarie salarie, Salarie tete)
         {
             if (salarie == tete)
@@ -415,15 +495,30 @@ namespace FormsProjetS6
             return false;
         }
 
+        /// <summary>
+        /// Méthode pour obtenir les noms de tous les clients
+        /// </summary>
+        /// <returns></returns>
         public static List<string> noms_clients()
         {
             return clients.Select(s=>s.noms).ToList();
         }
+
+        /// <summary>
+        /// Méthode pour obtenir les noms de tous les véhicules
+        /// </summary>
+        /// <returns></returns>
         public static List<string> noms_Vehicules()
         {
             return vehicules.Select(s=>s.ToString()).ToList();
         }
 
+        /// <summary>
+        /// Méthode pour insérer un nouveau salarié dans l'organigramme sous un chef donné
+        /// </summary>
+        /// <param name="new_sal"></param>
+        /// <param name="noms_boss"></param>
+        /// <returns></returns>
         public static bool insert_in_organigramme(Salarie new_sal, string noms_boss)
         {
             try
@@ -447,10 +542,23 @@ namespace FormsProjetS6
                 return false;
             }
         }
+
+        /// <summary>
+        /// Méthode pour trouver un salarié par son nom
+        /// </summary>
+        /// <param name="noms_salarie"></param>
+        /// <returns></returns>
         public static Salarie FindSalarie(string noms_salarie)
         {
             return salaries.Find(s => s.noms == noms_salarie);
         }
+
+        /// <summary>
+        /// Méthode pour trouver le chef d'un salarié dans l'organigramme
+        /// </summary>
+        /// <param name="sal"></param>
+        /// <param name="tete"></param>
+        /// <returns></returns>
         public static Salarie FindBoss(Salarie sal, Salarie tete = null)
         {
             Salarie current = tete ?? Organigramme;
@@ -472,18 +580,32 @@ namespace FormsProjetS6
             return null;
         }
 
+        /// <summary>
+        /// Méthode pour trouver le client associé à une commande
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <returns></returns>
         public static Client FindClientCommande(Commande commande)
         {
             return clients.FirstOrDefault(c => c.Commandes.Contains(commande));
         }
 
-
+        /// <summary>
+        /// Méthode pour ajouter une commande pour un client donné
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <param name="cli"></param>
         public static void AddCommande(Commande commande, Client cli)
         {
             commandes.Add(commande);
             cli.Commandes.Add(commande);
             commande.Chauffeur.nombreCommandes++;
         }
+
+        /// <summary>
+        /// Méthode pour supprimer une commande
+        /// </summary>
+        /// <param name="commande"></param>
         public static void RemoveCommande(Commande commande)
         {
             commande.Chauffeur.nombreCommandes--;
@@ -491,21 +613,40 @@ namespace FormsProjetS6
             FindClientCommande(commande).Commandes.Remove(commande);
         }
 
+        /// <summary>
+        /// Méthode pour ajouter un client
+        /// </summary>
+        /// <param name="client"></param>
         public static void AddClient(Client client)
         {
             clients.Add(client);
         }
 
+        /// <summary>
+        /// Méthode pour supprimer un client
+        /// </summary>
+        /// <param name="client"></param>
         public static void RemoveClient(Client client)
         {
             clients.Remove(client);
         }
 
+        /// <summary>
+        /// Méthode pour ajouter un nouveau salarié
+        /// </summary>
+        /// <param name="salarie"></param>
+        /// <param name="nom_boss"></param>
+        /// <returns></returns>
         public static bool AddSalarie(Salarie salarie, string nom_boss)
         {
             salaries.Add(salarie);
             return insert_in_organigramme(salarie, nom_boss);
         }
+
+        /// <summary>
+        /// Méthode pour supprimer un salarié
+        /// </summary>
+        /// <param name="salarie"></param>
         public static void RemoveSalarie(Salarie salarie)
         {
             salaries.Remove(salarie);
@@ -514,11 +655,19 @@ namespace FormsProjetS6
             boss?.suivants.Remove(salarie);
         }
 
+        /// <summary>
+        /// Méthode pour ajouter un véhicule
+        /// </summary>
+        /// <param name="vehicule"></param>
         public static void AddVehicule(Vehicule vehicule)
         {
             vehicules.Add(vehicule);
         }
 
+        /// <summary>
+        /// Méthode pour supprimer un véhicule
+        /// </summary>
+        /// <param name="vehicule"></param>
         public static void RemoveVehicule(Vehicule vehicule)
         {
             vehicules.Remove(vehicule);
