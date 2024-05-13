@@ -10,6 +10,7 @@ namespace FormsProjetS6
     {
         float prixKm;
         float prixLoc;
+        public int UsageCount { get; set; } = 0;
         public Chauffeur Chauffeur { get; set; } = null;
 
         public Vehicule(float prixKm, float prixLoc) 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace FormsProjetS6
         public Form1()
         {
             InitializeComponent();
+            DataBase.Generate();
+            labelPatron.Text = "Directeur : " + DataBase.Organigramme.noms;
         }
 
         void updateComboBoxListeClients()
@@ -29,6 +32,13 @@ namespace FormsProjetS6
             comboBoxListClients.SelectedIndex = 0;
         }
 
+        void updateStatistiques()
+        {
+            string stats = DataBase.GetStatistics();
+
+            labelStats.Text = stats;
+        }
+
         private void buttonClient_Click(object sender, EventArgs e)
         {
             tabControl1.SelectedTab = tabClient;
@@ -38,6 +48,8 @@ namespace FormsProjetS6
         {
             tabControl1.SelectedTab = tabSalarie;
         }
+
+
 
         private void buttonCommande_Click(object sender, EventArgs e)
         {
@@ -65,6 +77,7 @@ namespace FormsProjetS6
             updateTabSalarie();
             updateTabCommandes();
             updateComboBoxListeClients();
+            updateStatistiques();
         }
 
         public List<string> GetProperties(object obj)
@@ -188,7 +201,7 @@ namespace FormsProjetS6
                 }
             }
         }
-        public static string InputBoxWithList(string title, string promptText, List<string> list)
+        public static string InputBoxUpdateSalarie(string title, string promptText, List<string> list)
         {
             Form form = new Form();
             Label label = new Label();
@@ -227,7 +240,7 @@ namespace FormsProjetS6
             buttonOk.Click += (sender, e) => {
                 if(comboBox.SelectedIndex == -1)
                 {
-                    MessageBox.Show("please select a value to changed");
+                    MessageBox.Show("veuillez rentrer une valeur ");
                     return;
                 }
                 form.DialogResult = DialogResult.OK;
@@ -265,6 +278,81 @@ namespace FormsProjetS6
                     form.DialogResult = DialogResult.OK;
                     form.Close();
                 }
+            }
+
+            void comboBox_KeyDown(object sender, KeyEventArgs e)
+            {
+                // If the user pressed the Enter key, close the form with a DialogResult.OK value
+                if (e.KeyCode == Keys.Enter)
+                {
+                    form.DialogResult = DialogResult.OK;
+                    form.Close();
+                }
+            }
+        }
+        public static string InputBoxChangeSuperieur(string title, string promptText, List<string> list)
+        {
+            Form form = new Form();
+            Label label = new Label();
+            ComboBox comboBox = new ComboBox();
+            Button buttonOk = new Button();
+            Button buttonCancel = new Button();
+
+            form.Text = title;
+            label.Text = promptText;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            label.SetBounds(15, 20, 250, 25);
+            comboBox.SetBounds(15, 80, 250, 25);
+            buttonOk.SetBounds(150, 115, 75, 25);
+            buttonCancel.SetBounds(230, 115, 75, 25);
+
+            form.ClientSize = new Size(350, 170);
+            form.FormBorderStyle = FormBorderStyle.FixedSingle;
+            form.MaximizeBox = false;
+            form.MinimizeBox = false;
+            form.StartPosition = FormStartPosition.CenterScreen;
+
+            form.Controls.AddRange(new Control[] { label, comboBox, buttonOk, buttonCancel });
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            // Add items to the ComboBox control
+            comboBox.Items.AddRange(list.ToArray());
+
+            buttonOk.Click += (sender, e) => {
+                if(comboBox.SelectedIndex == -1)
+                {
+                    MessageBox.Show("rentrez une valeur svp");
+                    return;
+                }
+                form.DialogResult = DialogResult.OK;
+                form.Close();
+            };
+
+            buttonCancel.Click += (sender, e) => {
+                form.DialogResult = DialogResult.Cancel;
+                form.Close();
+            };
+
+            comboBox.KeyDown += new KeyEventHandler(comboBox_KeyDown);
+
+            DialogResult dialogResult = form.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string newSuperieur="";
+                if (comboBox.SelectedItem != null)
+                {
+                    newSuperieur = comboBox.SelectedItem.ToString();
+                }
+                return newSuperieur;
+            }
+            else
+            {
+                return "";
             }
 
             void comboBox_KeyDown(object sender, KeyEventArgs e)
@@ -329,10 +417,21 @@ namespace FormsProjetS6
             string r = "";
 
             for (int i = 0; i < DataBase.clients.Count; i++)
-                r += DataBase.clients[i].Nom + " " + DataBase.clients[i].Prenom + "\n";
+                r += DataBase.clients[i].noms+"\n";
 
             return r;
         }
+
+        public string get_names_salaries()
+        {
+            string r = "";
+
+            for (int i = 0; i < DataBase.salaries.Count; i++)
+                r += DataBase.salaries[i].noms+"\n";
+
+            return r;
+        }
+
 
         private void buttonDeleteClient_Click(object sender, EventArgs e)
         {
@@ -389,7 +488,7 @@ namespace FormsProjetS6
         {
             List<string> props = GetProperties(client);
 
-            string[] infos = InputBoxWithList("Modifier CLient", "Choisissez le champs à modifier puis choisissez la valeur", props).Split('|');
+            string[] infos = InputBoxUpdateSalarie("Modifier CLient", "Choisissez le champs à modifier puis choisissez la valeur", props).Split('|');
             if (infos.Length <= 1) return; 
             string nameProp = infos[0];
             string newValue = infos[1];
@@ -457,7 +556,7 @@ namespace FormsProjetS6
         {
             List<string> props = GetProperties(sal);
 
-            string[] infos = InputBoxWithList("Modifier Salarié", "Choisissez le champs à modifier puis choisissez la valeur", props).Split('|');
+            string[] infos = InputBoxUpdateSalarie("Modifier Salarié", "Choisissez le champs à modifier puis choisissez la valeur", props).Split('|');
             if (infos.Length <= 1) return;
             string nameProp = infos[0];
             string newValue = infos[1];
@@ -490,9 +589,22 @@ namespace FormsProjetS6
                     ContextMenuStrip contextMenu = new ContextMenuStrip();
                     contextMenu.Items.Add("Supprimer salarie").Click += (s, ev) => RemoveSalarie(salarie);
                     contextMenu.Items.Add("Modifier salarie").Click += (s, ev) => UpdateSalarie(salarie);
+                    contextMenu.Items.Add("Changer Superieur").Click += (s, ev) => ChangerSuperieur(salarie);
                     contextMenu.Show(Cursor.Position);
                 }
             }
+        }
+
+        void ChangerSuperieur(Salarie salarie) 
+        { 
+            string nomNewChef = InputBoxChangeSuperieur("Changer Supperieur", $"Choisissez le nouveau superieur de {salarie.noms}",DataBase.noms_salaries_non_inferieurs(salarie));
+            if (string.IsNullOrEmpty(nomNewChef))
+                return;
+            Salarie new_chef = DataBase.FindSalarie(nomNewChef);
+            Salarie ancien_chef = DataBase.FindBoss(salarie);
+            new_chef.suivants.Add(salarie);
+            ancien_chef.suivants.Remove(salarie);
+            updateTabSalarie();
         }
 
         #endregion

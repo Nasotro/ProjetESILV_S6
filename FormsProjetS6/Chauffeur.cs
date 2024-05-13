@@ -9,6 +9,7 @@ namespace FormsProjetS6
     internal class Chauffeur : Salarie
     {
         int tarifHoraire;
+        public int nombreCommandes { get; set; } = 0;
         public Vehicule Vehicule { get; set; }
         public Chauffeur(string numeroSS, string nom, string prenom, DateTime dateDeNaissance, Adresse adressePostale, string adresseMail, string telephone, DateTime dateEntree, int salaire, int TarifHoraire, Vehicule v)
             : base(numeroSS, nom, prenom, dateDeNaissance, adressePostale, adresseMail, telephone, dateEntree, "Chauffeur", salaire)

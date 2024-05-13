@@ -18,6 +18,7 @@ namespace FormsProjetS6
         public static List<Client> clients = new List<Client>();
         public static List<Salarie> salaries = new List<Salarie>();
         public static List<Vehicule> vehicules = new List<Vehicule>();
+        public static List<Chauffeur> Chauffeurs = new List<Chauffeur>(); 
         public static List<string> Villes = new List<string>
         {
             "Paris",
@@ -35,7 +36,6 @@ namespace FormsProjetS6
             "Avignon",
             "Monaco"
         };
-        public static List<Chauffeur> Chauffeurs = new List<Chauffeur>(); 
         public static Salarie Organigramme;
 
         public static void Generate()
@@ -132,7 +132,75 @@ namespace FormsProjetS6
 
         }
 
+        public static string GetStatistics()
+        {
+            if (commandes == null || commandes.Count == 0 || clients == null || clients.Count == 0 || salaries == null || salaries.Count == 0 || vehicules == null || vehicules.Count == 0 || Chauffeurs == null || Chauffeurs.Count == 0)
+            {
+                return "Une ou plusieurs listes sont nulles ou vides. Impossible de calculer les statistiques.";
+            }
+            // Total number of commands
+            int totalCommands = commandes.Count;
 
+            // Total number of clients
+            int totalClients = clients.Count;
+
+            // Total number of employees
+            int totalEmployees = salaries.Count;
+
+            // Total number of vehicles
+            int totalVehicles = vehicules.Count;
+
+            // Total number of drivers
+            int totalDrivers = Chauffeurs.Count;
+
+            // Best client
+            Client bestClient = clients.OrderByDescending(c => c.NbCommandes).FirstOrDefault();
+
+            // Busiest driver
+            Chauffeur busiestDriver = Chauffeurs.OrderByDescending(c => c.nombreCommandes).FirstOrDefault();
+
+            // Average command price
+            float averageCommandPrice = commandes.Average(c => c.Prix);
+
+            // Total revenue
+            float totalRevenue = commandes.Sum(c => c.Prix);
+
+            // Average distance per command
+            float averageDistance = commandes.Average(c => c.Distance);
+
+            // Average time per command
+            float averageTime = commandes.Average(c => c.TempsEnMin);
+
+            // Total distance covered by all commands
+            float totalDistance = commandes.Sum(c => c.Distance);
+
+            // Total time taken for all commands
+            float totalTime = commandes.Sum(c => c.TempsEnMin);
+
+            // Number of unique clients
+            int uniqueClients = clients.Where(c => c.Commandes.Count > 0).Count();
+
+            // Return statistics as a string
+            return $"Nombre total de commandes : {totalCommands}\n" +
+                   $"Nombre total de clients : {totalClients}\n" +
+                   $"Nombre total d'employés : {totalEmployees}\n" +
+                   $"Nombre total de véhicules : {totalVehicles}\n" +
+                   $"Nombre total de chauffeurs : {totalDrivers}\n" +
+                   $"Meilleur client : {bestClient.noms}\n" +
+                   $"Chauffeur le plus occupé : {busiestDriver.noms}\n" +
+                   $"Prix moyen d'une commande : {averageCommandPrice}€\n" +
+                   $"Revenu total : {totalRevenue}\n" +
+                   $"Distance moyenne par commande : {averageDistance}km\n" +
+                   $"Temps moyen par commande : {formatTemps(averageTime)}\n" +
+                   $"Distance totale parcourue par toutes les commandes : {totalDistance}\n" +
+                   $"Temps total pris pour toutes les commandes : {formatTemps(totalTime)}km\n" +
+                   $"Nombre de clients avec au moins 1 commande : {uniqueClients}";
+        }
+
+        public static string formatTemps(float temps)
+        {
+            return (int)(temps / 60) + "h" + (temps % 60);
+        }
 
         public static void CreateSalarieDemandes()
         {
@@ -271,7 +339,6 @@ namespace FormsProjetS6
 
             return tete;
         }
-
         public static string ShowOrganigramme(Salarie tete, int decal = 0, bool last = false, string prefixe = "")
         {
             if (tete == null)
@@ -303,6 +370,51 @@ namespace FormsProjetS6
         {
             return salaries.Select(s=>s.noms).ToList();
         }
+
+        public static List<string> noms_salaries_non_inferieurs(Salarie salarie, List<Salarie> allSalaries = null)
+        {
+            if (allSalaries == null)
+                allSalaries = salaries;
+            // Base case: if the salarie is null, return all salaries' names
+            if (salarie == null)
+            {
+                return allSalaries.Select(s => s.noms).ToList();
+            }
+
+            // Recursive case: check each salarie in the list
+            var names = new List<string>();
+            foreach (var s in allSalaries)
+            {
+                // If the salarie is not in the subtree of the given salarie, add its name to the list
+                if (!IsInSubtree(s, salarie))
+                {
+                    names.Add(s.noms);
+                }
+
+                // Also check the suivants of the salarie
+                names.AddRange(noms_salaries_non_inferieurs(salarie, s.suivants));
+            }
+
+            return names.Distinct().ToList();
+        }
+        public static bool IsInSubtree(Salarie salarie, Salarie tete)
+        {
+            if (salarie == tete)
+            {
+                return true;
+            }
+
+            foreach (var s in tete.suivants)
+            {
+                if (IsInSubtree(salarie, s))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static List<string> noms_clients()
         {
             return clients.Select(s=>s.noms).ToList();
@@ -335,11 +447,11 @@ namespace FormsProjetS6
                 return false;
             }
         }
-        private static Salarie FindSalarie(string noms_boss)
+        public static Salarie FindSalarie(string noms_salarie)
         {
-            return salaries.Find(s => s.noms == noms_boss);
+            return salaries.Find(s => s.noms == noms_salarie);
         }
-        static Salarie FindBoss(Salarie sal, Salarie tete = null)
+        public static Salarie FindBoss(Salarie sal, Salarie tete = null)
         {
             Salarie current = tete ?? Organigramme;
             Salarie supérieur = current;
@@ -365,8 +477,16 @@ namespace FormsProjetS6
             return clients.FirstOrDefault(c => c.Commandes.Contains(commande));
         }
 
+
+        public static void AddCommande(Commande commande, Client cli)
+        {
+            commandes.Add(commande);
+            cli.Commandes.Add(commande);
+            commande.Chauffeur.nombreCommandes++;
+        }
         public static void RemoveCommande(Commande commande)
         {
+            commande.Chauffeur.nombreCommandes--;
             commandes.Remove(commande);
             FindClientCommande(commande).Commandes.Remove(commande);
         }

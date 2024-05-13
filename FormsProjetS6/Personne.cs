@@ -73,7 +73,7 @@ namespace FormsProjetS6
             return $"{nom} {prenom}\nNuméro de sécurité sociale : {numeroSS}\nDate de naissance : {dateDeNaissance:dd/MM/yyyy}\nAdresse postale : {adresse}\nAdresse e-mail : {mail}\nTéléphone : {telephone}";
         }
 
-        public string noms { get { return nom + " " + prenom; } }
+        public string noms { get { return prenom + " " + nom; } }
     }
 
 }

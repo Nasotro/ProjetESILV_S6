@@ -45,8 +45,7 @@ namespace FormsProjetS6
             Commande c = new Commande(adresseA, adresseB, chauff, date, cli);
 
             // Add the new client to the clientsList
-            DataBase.commandes.Add(c);
-            cli.Commandes.Add(c);
+            DataBase.AddCommande(c, cli);
 
             comboBoxAdresseA.DataSource = null;
             comboBoxAdresseB.DataSource = null;
