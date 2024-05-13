@@ -20,7 +20,11 @@ namespace FormsProjetS6
             achatCumule = achat_cumule;
             Commandes = new List<Commande>();
         }
-
+        public void addCommande(Commande commande)
+        {
+            Commandes.Add(commande);
+            commande.Client = this;
+        }
         public int AchatCumule
         {
             get { return (int)Commandes.Sum(c => c.Prix); }

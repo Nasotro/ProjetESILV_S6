@@ -122,7 +122,7 @@ namespace FormsProjetS6
 
             commandes = createCommandes(30);
             Random rand = new Random();
-            commandes.ForEach(c => clients.OrderBy(s => rand.Next()).First().Commandes.Add(c));
+            commandes.ForEach(c => clients.OrderBy(s => rand.Next()).First().addCommande(c));
         }
 
         public static List<Commande> createCommandes(int n = 20)
@@ -290,14 +290,15 @@ namespace FormsProjetS6
             return null;
         }
 
-        public static void AddCommande(Commande commande)
+        public static Client FindClientCommande(Commande commande)
         {
-            commandes.Add(commande);
+            return clients.FirstOrDefault(c => c.Commandes.Contains(commande));
         }
 
         public static void RemoveCommande(Commande commande)
         {
             commandes.Remove(commande);
+            FindClientCommande(commande).Commandes.Remove(commande);
         }
 
         public static void AddClient(Client client)

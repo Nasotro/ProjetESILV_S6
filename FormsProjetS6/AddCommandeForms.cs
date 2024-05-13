@@ -42,7 +42,7 @@ namespace FormsProjetS6
             Client cli = DataBase.clients.FirstOrDefault(client => client.noms == comboBoxCLient.Text);
 
             // Create a new Client object using the input values
-            Commande c = new Commande(adresseA, adresseB, chauff, date);
+            Commande c = new Commande(adresseA, adresseB, chauff, date, cli);
 
             // Add the new client to the clientsList
             DataBase.commandes.Add(c);

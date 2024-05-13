@@ -553,5 +553,32 @@ namespace FormsProjetS6
 
             orderColumnsCommandes();
         }
+
+
+        void RemoveCommande(Commande commande)
+        {
+            DataBase.RemoveCommande(commande); 
+            updateTabCommandes();
+        }
+
+        private void datagvCommandes_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Get the row index of the clicked cell
+                int rowIndex = e.RowIndex;
+
+                // Check if the click was on a valid row (not the row header or an empty row)
+                if (rowIndex >= 0 && rowIndex < datagvCommandes.Rows.Count)
+                {
+                    Commande commande = (Commande)datagvCommandes.Rows[rowIndex].DataBoundItem;
+
+                    ContextMenuStrip contextMenu = new ContextMenuStrip();
+                    contextMenu.Items.Add("Supprimer commande").Click += (s, ev) => RemoveCommande(commande);
+                    contextMenu.Show(Cursor.Position);
+                }
+            }
+
+        }
     }
 }

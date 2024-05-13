@@ -14,11 +14,27 @@ namespace FormsProjetS6
         protected Chauffeur chauffeur;
         protected DateTime date;
         protected Vehicule vehicule;
+        Client client;
+        public Client Client { get { return client; } set { client = value; } }
         public float Distance { get; set; }
         public float TempsEnMin { get; set; }
         public string tempsFormated
         {
             get { return (int)(TempsEnMin / 60) + "h" + (TempsEnMin % 60); }
+        }
+        public Commande(Adresse adresseA, Adresse adresseB, Chauffeur chauffeur, DateTime date, Client c)
+        {
+            this.adresseA = adresseA;
+            this.adresseB = adresseB;
+            this.chauffeur = chauffeur;
+            this.vehicule = chauffeur.Vehicule;
+            this.date = date;
+            this.client = c;
+            //System.Windows.Forms.MessageBox.Show(chauffeur+"");
+            float[] infos = CheminLePlusCourt(adresseA, adresseB);
+            Distance = infos[0];
+            TempsEnMin = infos[1];
+            prix = vehicule.PrixLoc + vehicule.PrixKm * Distance + TempsEnMin * Chauffeur.TarifHoraire;
         }
         public Commande(Adresse adresseA, Adresse adresseB, Chauffeur chauffeur, DateTime date)
         {
@@ -33,6 +49,8 @@ namespace FormsProjetS6
             TempsEnMin = infos[1];
             prix = vehicule.PrixLoc + vehicule.PrixKm * Distance + TempsEnMin * Chauffeur.TarifHoraire;
         }
+
+
         public class Ville : IComparable<Ville> 
         {
             public string Name { get; set; }
@@ -200,6 +218,7 @@ namespace FormsProjetS6
                    $"Prix: {prix}\n" +
                    $"Chauffeur: {chauffeur}\n" +
                    $"Vehicule: {vehicule}\n" +
+                   $"Client : {client}" +
                    $"Date: {date}";
         }
     }

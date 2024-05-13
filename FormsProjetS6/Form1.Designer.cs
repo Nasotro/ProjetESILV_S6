@@ -311,6 +311,7 @@
             this.datagvCommandes.RowHeadersWidth = 51;
             this.datagvCommandes.Size = new System.Drawing.Size(701, 249);
             this.datagvCommandes.TabIndex = 1;
+            this.datagvCommandes.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.datagvCommandes_CellMouseClick);
             this.datagvCommandes.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.datagvCommandes_ColumnHeaderMouseClick);
             // 
             // labelOuais
