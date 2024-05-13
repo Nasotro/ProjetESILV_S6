@@ -12,6 +12,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace FormsProjetS6
 {
+    public interface IStatisticable
+    {
+        void GetStatistics();
+    }
+
     internal static class DataBase
     {
         public static List<Commande> commandes = new List<Commande>();
@@ -131,7 +136,6 @@ namespace FormsProjetS6
 
 
         }
-
         public static string GetStatistics()
         {
             if (commandes == null || commandes.Count == 0 || clients == null || clients.Count == 0 || salaries == null || salaries.Count == 0 || vehicules == null || vehicules.Count == 0 || Chauffeurs == null || Chauffeurs.Count == 0)
@@ -196,7 +200,6 @@ namespace FormsProjetS6
                    $"Temps total pris pour toutes les commandes : {formatTemps(totalTime)}km\n" +
                    $"Nombre de clients avec au moins 1 commande : {uniqueClients}";
         }
-
         public static string formatTemps(float temps)
         {
             return (int)(temps / 60) + "h" + (temps % 60);
@@ -315,7 +318,7 @@ namespace FormsProjetS6
 
             return randomDate;
         }
-        static Salarie CreateOrganigramme(Salarie tete)
+        static Salarie CreateRandomOrganigramme(Salarie tete)
         {
             Random rnd = new Random();
 
@@ -495,7 +498,6 @@ namespace FormsProjetS6
         {
             clients.Add(client);
         }
-
         public static void RemoveClient(Client client)
         {
             clients.Remove(client);
