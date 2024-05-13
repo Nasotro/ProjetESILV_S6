@@ -17,7 +17,16 @@ namespace FormsProjetS6
         public Form1()
         {
             InitializeComponent();
-            updateTabClient();
+        }
+
+        void updateComboBoxListeClients()
+        {
+            comboBoxListClients.DataSource = null;
+            List<string> new_clients = DataBase.noms_clients();
+            new_clients.Insert(0, "Tous");
+            comboBoxListClients.DataSource = new_clients;
+            //MessageBox.Show("taille" +new_clients.Count);
+            comboBoxListClients.SelectedIndex = 0;
         }
 
         private void buttonClient_Click(object sender, EventArgs e)
@@ -55,6 +64,7 @@ namespace FormsProjetS6
             updateTabClient();
             updateTabSalarie();
             updateTabCommandes();
+            updateComboBoxListeClients();
         }
 
         public List<string> GetProperties(object obj)
@@ -520,21 +530,13 @@ namespace FormsProjetS6
             updateTabCommandes();
             List<Commande.Ville> villes = DataBase.commandes[0].loadCSV("Distances.csv");
             villes.Sort();
-            labelOuais.Text = string.Join("\n", villes);
         }
 
         #endregion
 
-        private void buttoncommandeTest_Click(object sender, EventArgs e)
+        private void buttoncommandeFiltreDate_Click(object sender, EventArgs e)
         {
-
-            Adresse b = new Adresse("Toulon", "France");
-            Adresse a = new Adresse("Paris", "France");
-            Vehicule v = new Voiture(10, 10, 5);
-            Chauffeur chauf = new Chauffeur("019", "Gautier", "Alice", DateTime.Parse("2009-01-01"), new Adresse("Ville Fin", "Numero Fin", "Rue Fin", "Pays Fin"), "fin@example.com", "1919191919", DateTime.Parse("2020-01-01"), 60000, 15, v);
-            Commande c = new Commande(a, b, chauf, DateTime.Now);
-
-            MessageBox.Show(c.Distance + ", " + c.tempsFormated);
+            updateTabCommandes();
         }
 
         private void buttonAddCommande_Click(object sender, EventArgs e)
@@ -579,6 +581,33 @@ namespace FormsProjetS6
                 }
             }
 
+        }
+
+        private void buttonCommandeDates_Click(object sender, EventArgs e)
+        {
+            datagvCommandes.DataSource = null;
+            DateTime date1 = dateTimePicker1.Value;
+            DateTime date2 = dateTimePicker2.Value;
+            datagvCommandes.DataSource = new BindingSource(DataBase.commandes.Where(commande => commande.Date >= date1 && commande.Date <= date2).ToList(), null);
+            orderColumnsCommandes();
+
+        }
+
+        private void comboBoxListClients_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            datagvCommandes.DataSource = null;
+            DateTime date1 = dateTimePicker1.Value;
+            DateTime date2 = dateTimePicker2.Value;
+            if(comboBoxListClients.Text == "Tous")
+                datagvCommandes.DataSource = DataBase.commandes;
+            else
+                datagvCommandes.DataSource = new BindingSource(DataBase.commandes.Where(commande => commande.Client.noms == comboBoxListClients.Text).ToList(), null);
+            orderColumnsCommandes();
+        }
+
+        private void comboBoxListClients_KeyDown(object sender, KeyEventArgs e)
+        {
+            updateComboBoxListeClients();
         }
     }
 }

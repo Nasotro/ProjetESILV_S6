@@ -46,13 +46,18 @@
             this.OrganigrammeLabel = new System.Windows.Forms.Label();
             this.buttonShowOrganigramme = new System.Windows.Forms.Button();
             this.tabCommande = new System.Windows.Forms.TabPage();
+            this.buttonCommandeDates = new System.Windows.Forms.Button();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.buttonAddCommande = new System.Windows.Forms.Button();
-            this.buttoncommandeTest = new System.Windows.Forms.Button();
-            this.buttonRefreshTabCommande = new System.Windows.Forms.Button();
+            this.buttoncommandeResetTab = new System.Windows.Forms.Button();
             this.datagvCommandes = new System.Windows.Forms.DataGridView();
-            this.labelOuais = new System.Windows.Forms.Label();
             this.tabStatistiques = new System.Windows.Forms.TabPage();
+            this.labelMeilleurChauffeur = new System.Windows.Forms.Label();
             this.buttonAccueil = new System.Windows.Forms.Button();
+            this.comboBoxListClients = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabAccueil.SuspendLayout();
             this.tabClient.SuspendLayout();
@@ -61,6 +66,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.datagvSalarie)).BeginInit();
             this.tabCommande.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.datagvCommandes)).BeginInit();
+            this.tabStatistiques.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -258,11 +265,12 @@
             // 
             // tabCommande
             // 
+            this.tabCommande.Controls.Add(this.panel1);
+            this.tabCommande.Controls.Add(this.label1);
+            this.tabCommande.Controls.Add(this.comboBoxListClients);
             this.tabCommande.Controls.Add(this.buttonAddCommande);
-            this.tabCommande.Controls.Add(this.buttoncommandeTest);
-            this.tabCommande.Controls.Add(this.buttonRefreshTabCommande);
+            this.tabCommande.Controls.Add(this.buttoncommandeResetTab);
             this.tabCommande.Controls.Add(this.datagvCommandes);
-            this.tabCommande.Controls.Add(this.labelOuais);
             this.tabCommande.Location = new System.Drawing.Point(4, 22);
             this.tabCommande.Name = "tabCommande";
             this.tabCommande.Size = new System.Drawing.Size(901, 411);
@@ -270,9 +278,35 @@
             this.tabCommande.Text = "commande";
             this.tabCommande.UseVisualStyleBackColor = true;
             // 
+            // buttonCommandeDates
+            // 
+            this.buttonCommandeDates.Location = new System.Drawing.Point(11, 89);
+            this.buttonCommandeDates.Name = "buttonCommandeDates";
+            this.buttonCommandeDates.Size = new System.Drawing.Size(130, 42);
+            this.buttonCommandeDates.TabIndex = 7;
+            this.buttonCommandeDates.Text = "Filtrer les commandes avec les dates";
+            this.buttonCommandeDates.UseVisualStyleBackColor = true;
+            this.buttonCommandeDates.Click += new System.EventHandler(this.buttonCommandeDates_Click);
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker2.Location = new System.Drawing.Point(21, 53);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(105, 20);
+            this.dateTimePicker2.TabIndex = 6;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(21, 18);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(105, 20);
+            this.dateTimePicker1.TabIndex = 5;
+            // 
             // buttonAddCommande
             // 
-            this.buttonAddCommande.Location = new System.Drawing.Point(494, 29);
+            this.buttonAddCommande.Location = new System.Drawing.Point(551, 33);
             this.buttonAddCommande.Name = "buttonAddCommande";
             this.buttonAddCommande.Size = new System.Drawing.Size(131, 33);
             this.buttonAddCommande.TabIndex = 4;
@@ -280,25 +314,16 @@
             this.buttonAddCommande.UseVisualStyleBackColor = true;
             this.buttonAddCommande.Click += new System.EventHandler(this.buttonAddCommande_Click);
             // 
-            // buttoncommandeTest
+            // buttoncommandeResetTab
             // 
-            this.buttoncommandeTest.Location = new System.Drawing.Point(341, 29);
-            this.buttoncommandeTest.Name = "buttoncommandeTest";
-            this.buttoncommandeTest.Size = new System.Drawing.Size(122, 32);
-            this.buttoncommandeTest.TabIndex = 3;
-            this.buttoncommandeTest.Text = "Test";
-            this.buttoncommandeTest.UseVisualStyleBackColor = true;
-            this.buttoncommandeTest.Click += new System.EventHandler(this.buttoncommandeTest_Click);
-            // 
-            // buttonRefreshTabCommande
-            // 
-            this.buttonRefreshTabCommande.Location = new System.Drawing.Point(172, 29);
-            this.buttonRefreshTabCommande.Name = "buttonRefreshTabCommande";
-            this.buttonRefreshTabCommande.Size = new System.Drawing.Size(115, 33);
-            this.buttonRefreshTabCommande.TabIndex = 2;
-            this.buttonRefreshTabCommande.Text = "REFRESH";
-            this.buttonRefreshTabCommande.UseVisualStyleBackColor = true;
-            this.buttonRefreshTabCommande.Click += new System.EventHandler(this.buttonRefreshTabCommande_Click);
+            this.buttoncommandeResetTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttoncommandeResetTab.Location = new System.Drawing.Point(18, 19);
+            this.buttoncommandeResetTab.Name = "buttoncommandeResetTab";
+            this.buttoncommandeResetTab.Size = new System.Drawing.Size(130, 55);
+            this.buttoncommandeResetTab.TabIndex = 3;
+            this.buttoncommandeResetTab.Text = "Retirer filtres";
+            this.buttoncommandeResetTab.UseVisualStyleBackColor = true;
+            this.buttoncommandeResetTab.Click += new System.EventHandler(this.buttoncommandeFiltreDate_Click);
             // 
             // datagvCommandes
             // 
@@ -314,24 +339,25 @@
             this.datagvCommandes.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.datagvCommandes_CellMouseClick);
             this.datagvCommandes.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.datagvCommandes_ColumnHeaderMouseClick);
             // 
-            // labelOuais
-            // 
-            this.labelOuais.AutoSize = true;
-            this.labelOuais.Location = new System.Drawing.Point(54, 80);
-            this.labelOuais.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelOuais.Name = "labelOuais";
-            this.labelOuais.Size = new System.Drawing.Size(35, 13);
-            this.labelOuais.TabIndex = 0;
-            this.labelOuais.Text = "label1";
-            // 
             // tabStatistiques
             // 
+            this.tabStatistiques.Controls.Add(this.labelMeilleurChauffeur);
             this.tabStatistiques.Location = new System.Drawing.Point(4, 22);
             this.tabStatistiques.Name = "tabStatistiques";
             this.tabStatistiques.Size = new System.Drawing.Size(901, 411);
             this.tabStatistiques.TabIndex = 4;
             this.tabStatistiques.Text = "statistiques";
             this.tabStatistiques.UseVisualStyleBackColor = true;
+            // 
+            // labelMeilleurChauffeur
+            // 
+            this.labelMeilleurChauffeur.AutoSize = true;
+            this.labelMeilleurChauffeur.Location = new System.Drawing.Point(64, 40);
+            this.labelMeilleurChauffeur.Name = "labelMeilleurChauffeur";
+            this.labelMeilleurChauffeur.Size = new System.Drawing.Size(130, 65);
+            this.labelMeilleurChauffeur.TabIndex = 0;
+            this.labelMeilleurChauffeur.Text = "Meilleur Chauffeur : \r\nMeilleur Client :\r\nNombre de commandes : \r\nNombre de salar" +
+    "ies :\r\nMoyenne prix commandes\r\n";
             // 
             // buttonAccueil
             // 
@@ -342,6 +368,36 @@
             this.buttonAccueil.Text = "ACCUEIL";
             this.buttonAccueil.UseVisualStyleBackColor = true;
             this.buttonAccueil.Click += new System.EventHandler(this.buttonAccueil_Click);
+            // 
+            // comboBoxListClients
+            // 
+            this.comboBoxListClients.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxListClients.FormattingEnabled = true;
+            this.comboBoxListClients.Location = new System.Drawing.Point(22, 270);
+            this.comboBoxListClients.Name = "comboBoxListClients";
+            this.comboBoxListClients.Size = new System.Drawing.Size(130, 21);
+            this.comboBoxListClients.TabIndex = 8;
+            this.comboBoxListClients.SelectedIndexChanged += new System.EventHandler(this.comboBoxListClients_SelectedIndexChanged);
+            this.comboBoxListClients.KeyDown += new System.Windows.Forms.KeyEventHandler(this.comboBoxListClients_KeyDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 254);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Choisir un client";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dateTimePicker1);
+            this.panel1.Controls.Add(this.dateTimePicker2);
+            this.panel1.Controls.Add(this.buttonCommandeDates);
+            this.panel1.Location = new System.Drawing.Point(3, 80);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(159, 143);
+            this.panel1.TabIndex = 10;
             // 
             // Form1
             // 
@@ -363,6 +419,9 @@
             this.tabCommande.ResumeLayout(false);
             this.tabCommande.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.datagvCommandes)).EndInit();
+            this.tabStatistiques.ResumeLayout(false);
+            this.tabStatistiques.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -388,11 +447,16 @@
         private System.Windows.Forms.Label OrganigrammeLabel;
         private System.Windows.Forms.Button buttonAddSalarie;
         private System.Windows.Forms.DataGridView datagvSalarie;
-        private System.Windows.Forms.Label labelOuais;
         private System.Windows.Forms.DataGridView datagvCommandes;
-        private System.Windows.Forms.Button buttonRefreshTabCommande;
-        private System.Windows.Forms.Button buttoncommandeTest;
+        private System.Windows.Forms.Button buttoncommandeResetTab;
         private System.Windows.Forms.Button buttonAddCommande;
+        private System.Windows.Forms.Label labelMeilleurChauffeur;
+        private System.Windows.Forms.Button buttonCommandeDates;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ComboBox comboBoxListClients;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

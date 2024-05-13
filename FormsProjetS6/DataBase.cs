@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace FormsProjetS6
 {
@@ -68,27 +71,27 @@ namespace FormsProjetS6
             clients = clientsList;
 
 
-            List<Salarie> salarieList = new List<Salarie>
-            {
-                new Salarie("SS123456", "Pierre", "Dupont", new DateTime(1990, 1, 1), new Adresse("Paris", "123", "Rue de Rivoli", "France"), "pierre.dupont@example.com", "01-23-45-67-89", new DateTime(2020, 1, 1), "Développeur", 40000),
-                new Salarie("SS789012", "Marie", "Martin", new DateTime(1992, 3, 15), new Adresse("Lyon", "45", "Rue de la République", "France"), "marie.martin@example.com", "04-78-90-12-34", new DateTime(2020, 6, 1), "Designer", 35000),
-                new Salarie("SS345678", "Jean", "Pierre", new DateTime(1985, 10, 20), new Adresse("Marseille", "678", "Rue de la Canebière", "France"), "jean.pierre@example.com", "04-91-23-45-67", new DateTime(2018, 3, 1), "Manager", 60000),
-                new Salarie("SS901234", "Sophie", "Lefebvre", new DateTime(1995, 5, 10), new Adresse("Bordeaux", "901", "Rue Sainte-Catherine", "France"), "sophie.lefebvre@example.com", "05-56-78-90-12", new DateTime(2020, 9, 1), "Commercial", 45000),
-                new Salarie("SS567890", "François", "Roux", new DateTime(1980, 12, 25), new Adresse("Toulouse", "567", "Rue du Taur", "France"), "francois.roux@example.com", "05-61-23-45-67", new DateTime(2019, 1, 1), "Ingénieur", 50000),
-                new Salarie("SS234567", "Catherine", "Lemaire", new DateTime(1988, 7, 20), new Adresse("Nice", "234", "Promenade des Anglais", "France"), "catherine.lemaire@example.com", "04-93-45-67-89", new DateTime(2018, 6, 1), "Secrétaire", 30000),
-                new Salarie("SS456789", "Henri", "Dubois", new DateTime(1991, 2, 5), new Adresse("Rennes", "456", "Rue de la République", "France"), "henri.dubois@example.com", "02-99-45-67-89", new DateTime(2020, 3, 1), "Développeur", 42000),
-                new Salarie("SS678901", "Laurent", "Garnier", new DateTime(1982, 11, 15), new Adresse("Strasbourg", "678", "Rue des Grandes Arcades", "France"), "laurent.garnier@example.com", "03-88-45-67-89", new DateTime(2019, 9, 1), "Manager", 65000),
-                new Salarie("SS109876", "Aurélie", "Moreau", new DateTime(1994, 1, 20), new Adresse("Nantes", "109", "Rue de la République", "France"), "aurelie.moreau@example.com", "02-40-45-67-89", new DateTime(2020, 6, 1), "Commercial", 48000),
-                new Salarie("SS543210", "Julien", "Bertrand", new DateTime(1986, 8, 10), new Adresse("Montpellier", "543", "Rue de la Comédie", "France"), "julien.bertrand@example.com", "04-67-45-67-89", new DateTime(2018, 12, 1), "Ingénieur", 55000),
-                new Salarie("SS765432", "Charlotte", "Dujardin", new DateTime(1993, 4, 15), new Adresse("Lille", "765", "Rue de la République", "France"), "charlotte.dujardin@example.com", "03-20-45-67-89", new DateTime(2020, 3, 1), "Secrétaire", 32000),
-                new Salarie("SS321098", "Benoît", "Girard", new DateTime(1989, 9, 25), new Adresse("Grenoble", "321", "Rue de la République", "France"), "benoit.girard@example.com", "04-76-45-67-89", new DateTime(2019, 6, 1), "Développeur", 40000),
-                new Salarie("SS987654", "Anaïs", "Lefort", new DateTime(1996, 10, 1), new Adresse("Rouen", "987", "Rue de la République", "France"), "anais.lefort@example.com", "02-35-45-67-89", new DateTime(2020, 9, 1), "Commercial", 42000),
-                new Salarie("SS654321", "Guillaume", "Fournier", new DateTime(1984, 3, 20), new Adresse("Toulon", "654", "Rue de la République", "France"), "guillaume.fournier@example.com", "04-94-45-67-89", new DateTime(2018, 3, 1), "Manager", 70000),
-                new Salarie("SS210987", "Léa", "Dupuis", new DateTime(1992, 6, 1), new Adresse("Reims", "210", "Rue de la République", "France"), "lea.dupuis@example.com", "03-26-45-67-89", new DateTime(2020, 6, 1), "Secrétaire", 30000),
-                new Salarie("SS876543", "Alexandre", "Lefebvre", new DateTime(1987, 11, 10), new Adresse("Dijon", "876", "Rue de la République", "France"), "alexandre.lefebvre@example.com", "03-80-45-67-89", new DateTime(2019, 9, 1), "Ingénieur", 58000)
-            };
-            salaries = salarieList;
-            Organigramme = CreateOrganigramme(salaries[0]);
+            //List<Salarie> salarieList = new List<Salarie>
+            //{
+            //    new Salarie("SS123456", "Pierre", "Dupont", new DateTime(1990, 1, 1), new Adresse("Paris", "123", "Rue de Rivoli", "France"), "pierre.dupont@example.com", "01-23-45-67-89", new DateTime(2020, 1, 1), "Développeur", 40000),
+            //    new Salarie("SS789012", "Marie", "Martin", new DateTime(1992, 3, 15), new Adresse("Lyon", "45", "Rue de la République", "France"), "marie.martin@example.com", "04-78-90-12-34", new DateTime(2020, 6, 1), "Designer", 35000),
+            //    new Salarie("SS345678", "Jean", "Pierre", new DateTime(1985, 10, 20), new Adresse("Marseille", "678", "Rue de la Canebière", "France"), "jean.pierre@example.com", "04-91-23-45-67", new DateTime(2018, 3, 1), "Manager", 60000),
+            //    new Salarie("SS901234", "Sophie", "Lefebvre", new DateTime(1995, 5, 10), new Adresse("Bordeaux", "901", "Rue Sainte-Catherine", "France"), "sophie.lefebvre@example.com", "05-56-78-90-12", new DateTime(2020, 9, 1), "Commercial", 45000),
+            //    new Salarie("SS567890", "François", "Roux", new DateTime(1980, 12, 25), new Adresse("Toulouse", "567", "Rue du Taur", "France"), "francois.roux@example.com", "05-61-23-45-67", new DateTime(2019, 1, 1), "Ingénieur", 50000),
+            //    new Salarie("SS234567", "Catherine", "Lemaire", new DateTime(1988, 7, 20), new Adresse("Nice", "234", "Promenade des Anglais", "France"), "catherine.lemaire@example.com", "04-93-45-67-89", new DateTime(2018, 6, 1), "Secrétaire", 30000),
+            //    new Salarie("SS456789", "Henri", "Dubois", new DateTime(1991, 2, 5), new Adresse("Rennes", "456", "Rue de la République", "France"), "henri.dubois@example.com", "02-99-45-67-89", new DateTime(2020, 3, 1), "Développeur", 42000),
+            //    new Salarie("SS678901", "Laurent", "Garnier", new DateTime(1982, 11, 15), new Adresse("Strasbourg", "678", "Rue des Grandes Arcades", "France"), "laurent.garnier@example.com", "03-88-45-67-89", new DateTime(2019, 9, 1), "Manager", 65000),
+            //    new Salarie("SS109876", "Aurélie", "Moreau", new DateTime(1994, 1, 20), new Adresse("Nantes", "109", "Rue de la République", "France"), "aurelie.moreau@example.com", "02-40-45-67-89", new DateTime(2020, 6, 1), "Commercial", 48000),
+            //    new Salarie("SS543210", "Julien", "Bertrand", new DateTime(1986, 8, 10), new Adresse("Montpellier", "543", "Rue de la Comédie", "France"), "julien.bertrand@example.com", "04-67-45-67-89", new DateTime(2018, 12, 1), "Ingénieur", 55000),
+            //    new Salarie("SS765432", "Charlotte", "Dujardin", new DateTime(1993, 4, 15), new Adresse("Lille", "765", "Rue de la République", "France"), "charlotte.dujardin@example.com", "03-20-45-67-89", new DateTime(2020, 3, 1), "Secrétaire", 32000),
+            //    new Salarie("SS321098", "Benoît", "Girard", new DateTime(1989, 9, 25), new Adresse("Grenoble", "321", "Rue de la République", "France"), "benoit.girard@example.com", "04-76-45-67-89", new DateTime(2019, 6, 1), "Développeur", 40000),
+            //    new Salarie("SS987654", "Anaïs", "Lefort", new DateTime(1996, 10, 1), new Adresse("Rouen", "987", "Rue de la République", "France"), "anais.lefort@example.com", "02-35-45-67-89", new DateTime(2020, 9, 1), "Commercial", 42000),
+            //    new Salarie("SS654321", "Guillaume", "Fournier", new DateTime(1984, 3, 20), new Adresse("Toulon", "654", "Rue de la République", "France"), "guillaume.fournier@example.com", "04-94-45-67-89", new DateTime(2018, 3, 1), "Manager", 70000),
+            //    new Salarie("SS210987", "Léa", "Dupuis", new DateTime(1992, 6, 1), new Adresse("Reims", "210", "Rue de la République", "France"), "lea.dupuis@example.com", "03-26-45-67-89", new DateTime(2020, 6, 1), "Secrétaire", 30000),
+            //    new Salarie("SS876543", "Alexandre", "Lefebvre", new DateTime(1987, 11, 10), new Adresse("Dijon", "876", "Rue de la République", "France"), "alexandre.lefebvre@example.com", "03-80-45-67-89", new DateTime(2019, 9, 1), "Ingénieur", 58000)
+            //};
+            //salaries = salarieList;
+            //Organigramme = CreateOrganigramme(salaries[0]);
 
             List<Voiture> voitures = new List<Voiture>
             {
@@ -120,11 +123,77 @@ namespace FormsProjetS6
             };
             vehicules.AddRange(camionnettes);
 
+            CreateSalarieDemandes();
+
             commandes = createCommandes(30);
             Random rand = new Random();
             commandes.ForEach(c => clients.OrderBy(s => rand.Next()).First().addCommande(c));
+
+
         }
 
+
+
+        public static void CreateSalarieDemandes()
+        {
+            Random rnd = new Random();
+
+            Salarie mrDupont = new Salarie("001", "Dupond", "Jean", GenerateRandomDate(new DateTime(1970, 1, 1), DateTime.Now, rnd), new Adresse("Paris", "75000", "Rue de la Paix", "France"), "jean.dupond@example.com", "0101010101", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Directeur Général", 100000);
+            Salarie mmeFiesta = new Salarie("002", "Fiesta", "Anne", GenerateRandomDate(new DateTime(1975, 1, 1), DateTime.Now, rnd), new Adresse("Lyon", "69000", "Rue de la République", "France"), "anne.fiesta@example.com", "0202020202", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Directrice Commerciale", 90000);
+            Salarie mrFetard = new Salarie("003", "Fetard", "Paul", GenerateRandomDate(new DateTime(1980, 1, 1), DateTime.Now, rnd), new Adresse("Marseille", "13000", "La Canebière", "France"), "paul.fetard@example.com", "0303030303", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Directeur des Opérations", 85000);
+            Salarie mmeJoyeuse = new Salarie("004", "Joyeuse", "Marie", GenerateRandomDate(new DateTime(1985, 1, 1), DateTime.Now, rnd), new Adresse("Toulouse", "31000", "Place du Capitole", "France"), "marie.joyeuse@example.com", "0404040404", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Directrice des RH", 80000);
+            Salarie mrGripSous = new Salarie("005", "GripSous", "Luc", GenerateRandomDate(new DateTime(1990, 1, 1), DateTime.Now, rnd), new Adresse("Nice", "06000", "Promenade des Anglais", "France"), "luc.gripsous@example.com", "0505050505", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Directeur Financier", 95000);
+            Salarie mrForge = new Salarie("006", "Forge", "Olivier", GenerateRandomDate(new DateTime(1995, 1, 1), DateTime.Now, rnd), new Adresse("Nantes", "44000", "Rue de la Marne", "France"), "olivier.forge@example.com", "0606060606", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Commercial", 70000);
+            Salarie mmeFermi = new Salarie("007", "Fermi", "Laura", GenerateRandomDate(new DateTime(2000, 1, 1), DateTime.Now, rnd), new Adresse("Strasbourg", "67000", "Place Kléber", "France"), "laura.fermi@example.com", "0707070707", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Commerciale", 70000);
+            Salarie mrRoyal = new Salarie("008", "Royal", "David", GenerateRandomDate(new DateTime(2005, 1, 1), DateTime.Now, rnd), new Adresse("Montpellier", "34000", "Place de la Comédie", "France"), "david.royal@example.com", "0808080808", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Chef Équipe", 75000);
+            Salarie mmePrince = new Salarie("009", "Prince", "Sophie", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), new Adresse("Bordeaux", "33000", "Place de la Bourse", "France"), "sophie.prince@example.com", "0909090909", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Chef d'Équipe", 75000);
+            Chauffeur mrRomu = new Chauffeur("010", "Romu", "Pierre", GenerateRandomDate(new DateTime(2015, 1, 1), DateTime.Now, rnd), new Adresse("Lille", "59000", "Place Charles de Gaulle", "France"), "pierre.romu@example.com", "1010101010", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), 50000, rnd.Next(10, 20), vehicules[rnd.Next(vehicules.Count)]);
+            Chauffeur mmeRome = new Chauffeur("011", "Rome", "Julie", GenerateRandomDate(new DateTime(2015, 1, 1), DateTime.Now, rnd), new Adresse("Rennes", "35000", "Place de la Mairie", "France"), "julie.rome@example.com", "1111111111", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), 50000, rnd.Next(10, 20), vehicules[rnd.Next(vehicules.Count)]);
+            Chauffeur mmeRomi = new Chauffeur("012", "Romi", "Isabelle", GenerateRandomDate(new DateTime(2015, 1, 1), DateTime.Now, rnd), new Adresse("Reims", "51100", "Place Drouet d'Erlon", "France"), "isabelle.romi@example.com", "1212121212", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), 50000, rnd.Next(10, 20), vehicules[rnd.Next(vehicules.Count)]);
+            Chauffeur mrRoma = new Chauffeur("013", "Roma", "Hugo", GenerateRandomDate(new DateTime(2015, 1, 1), DateTime.Now, rnd), new Adresse("Le Havre", "76600", "Place de l'Hôtel de Ville", "France"), "hugo.roma@example.com", "1313131313", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), 50000, rnd.Next(10, 20), vehicules[rnd.Next(vehicules.Count)]);
+            Chauffeur mmeRimou = new Chauffeur("020", "Rimou", "Marie", GenerateRandomDate(new DateTime(1998, 1, 1), DateTime.Now, rnd), new Adresse("Caen", "14000", "Place Saint-Pierre", "France"), "marie.rimou@example.com", "2020202020", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), 50000, rnd.Next(10, 20), vehicules[rnd.Next(vehicules.Count)]);
+            Salarie mmeCouleur = new Salarie("014", "Couleur", "Nathalie", GenerateRandomDate(new DateTime(2014, 1, 1), DateTime.Now, rnd), new Adresse("Saint-Étienne", "42000", "Place Jean Jaurès", "France"), "nathalie.couleur@example.com", "1414141414", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Formation", 68000);
+            Salarie mmeToutleMonde = new Salarie("015", "ToutleMonde", "Caroline", GenerateRandomDate(new DateTime(2013, 1, 1), DateTime.Now, rnd), new Adresse("Toulon", "83000", "Place de la Liberté", "France"), "caroline.toutlemonde@example.com", "1515151515", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Contrats", 65000);
+            Salarie mrPiscou = new Salarie("016", "Piscou", "Bernard", GenerateRandomDate(new DateTime(2012, 1, 1), DateTime.Now, rnd), new Adresse("Grenoble", "38000", "Place Victor Hugo", "France"), "bernard.piscou@example.com", "1616161616", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Direction Comptable", 73000);
+            Salarie mrGrosSous = new Salarie("017", "GrosSous", "Étienne", GenerateRandomDate(new DateTime(2011, 1, 1), DateTime.Now, rnd), new Adresse("Dijon", "21000", "Place de la Libération", "France"), "etienne.grossous@example.com", "1717171717", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Contrôleur de Gestion", 71000);
+            Salarie mmeFournier = new Salarie("018", "Fournier", "Hélène", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), new Adresse("Nîmes", "30000", "Place de la Maison Carrée", "France"), "helene.fournier@example.com", "1818181818", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Comptable", 60000);
+            Salarie mmeGautier = new Salarie("019", "Gautier", "Alice", GenerateRandomDate(new DateTime(2009, 1, 1), DateTime.Now, rnd), new Adresse("Angers", "49000", "Place du Ralliement", "France"), "alice.gautier@example.com", "1919191919", GenerateRandomDate(new DateTime(2010, 1, 1), DateTime.Now, rnd), "Comptable", 60000);
+
+
+            mrDupont.suivants = new List<Salarie>() { mmeFiesta, mrFetard, mmeJoyeuse, mrGripSous };
+            mmeFiesta.suivants = new List<Salarie>() { mrForge, mmeFermi };
+            mrFetard.suivants = new List<Salarie>() { mrRoyal, mmePrince };
+            mrRoyal.suivants = new List<Salarie>() { mrRomu, mmeRomi, mrRoma };
+            mmePrince.suivants = new List<Salarie>() { mmeRome, mmeRimou };
+            mmeJoyeuse.suivants = new List<Salarie>() { mmeCouleur, mmeToutleMonde };
+            mrGripSous.suivants = new List<Salarie>() { mrPiscou, mrGrosSous };
+            mrPiscou.suivants = new List<Salarie>() { mmeFournier, mmeGautier };
+
+            List <Salarie> all_salaries = new List<Salarie>
+            {
+                mrDupont,
+                mmeFiesta,
+                mrFetard,
+                mmeJoyeuse,
+                mrGripSous,
+                mrForge,
+                mmeFermi,
+                mrRoyal,
+                mmePrince,
+                mrRomu,
+                mmeRome,
+                mmeRomi,
+                mrRoma,
+                mmeCouleur,
+                mmeToutleMonde,
+                mrPiscou,
+                mrGrosSous,
+                mmeFournier,
+                mmeGautier
+            };
+            salaries = all_salaries;
+            Organigramme = mrDupont;
+        }
         public static List<Commande> createCommandes(int n = 20)
         {
             // A list to store the created Commandes
@@ -134,8 +203,9 @@ namespace FormsProjetS6
             Random rand = new Random();
 
             // Creating Chauffeur objects
-            int nb_chauffeurs = salaries.Count / 3; 
-            List<Chauffeur> chauffeurs = salaries.OrderBy(s => rand.Next()).Take(n).Select(s => new Chauffeur(s, rand.Next(10, 20), vehicules[rand.Next(vehicules.Count)])).ToList();
+            int nb_chauffeurs = salaries.Count / 3;
+            //List<Chauffeur> chauffeurs = salaries.OrderBy(s => rand.Next()).Take(n).Select(s => new Chauffeur(s, rand.Next(10, 20), vehicules[rand.Next(vehicules.Count)])).ToList();
+            List<Chauffeur> chauffeurs = salaries.OfType<Chauffeur>().ToList();
 
             Chauffeurs = chauffeurs;
 

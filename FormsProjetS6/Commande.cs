@@ -15,6 +15,7 @@ namespace FormsProjetS6
         protected DateTime date;
         protected Vehicule vehicule;
         Client client;
+        public string Chemin { get; set; }
         public Client Client { get { return client; } set { client = value; } }
         public float Distance { get; set; }
         public float TempsEnMin { get; set; }
@@ -31,9 +32,10 @@ namespace FormsProjetS6
             this.date = date;
             this.client = c;
             //System.Windows.Forms.MessageBox.Show(chauffeur+"");
-            float[] infos = CheminLePlusCourt(adresseA, adresseB);
-            Distance = infos[0];
-            TempsEnMin = infos[1];
+            string[] infos = CheminLePlusCourt(adresseA, adresseB);
+            Distance = float.Parse(infos[0]);
+            TempsEnMin = float.Parse(infos[1]);
+            Chemin = infos[2];
             prix = vehicule.PrixLoc + vehicule.PrixKm * Distance + TempsEnMin * Chauffeur.TarifHoraire;
         }
         public Commande(Adresse adresseA, Adresse adresseB, Chauffeur chauffeur, DateTime date)
@@ -44,9 +46,10 @@ namespace FormsProjetS6
             this.vehicule = chauffeur.Vehicule;
             this.date = date;
             //System.Windows.Forms.MessageBox.Show(chauffeur+"");
-            float[] infos = CheminLePlusCourt(adresseA, adresseB);
-            Distance = infos[0];
-            TempsEnMin = infos[1];
+            string[] infos = CheminLePlusCourt(adresseA, adresseB);
+            Distance = float.Parse(infos[0]);
+            TempsEnMin = float.Parse(infos[1]);
+            Chemin = infos[2];
             prix = vehicule.PrixLoc + vehicule.PrixKm * Distance + TempsEnMin * Chauffeur.TarifHoraire;
         }
 
@@ -55,6 +58,7 @@ namespace FormsProjetS6
         {
             public string Name { get; set; }
             public bool IsOut { get; set; } = false;
+            public string Chemin { get; set; } = "";
             public Dictionary<Ville, int> VoisinsDist { get; set; } = new Dictionary<Ville, int>();
             public Dictionary<Ville, int> VoisinsTemps { get; set; } = new Dictionary<Ville, int>();
             public int CheminLePlusCourt { get; set; } = int.MaxValue;
@@ -64,6 +68,7 @@ namespace FormsProjetS6
             {
                 Name = name;
                 IsOut = false;
+                Chemin = "";
             }
             public void Reset()
             {
@@ -71,6 +76,7 @@ namespace FormsProjetS6
                 TempsLePlusCourt = 0;
                 VillePrecedente = null;
                 IsOut = false;
+                Chemin = "";
             }
             public override string ToString()
             {
@@ -123,7 +129,7 @@ namespace FormsProjetS6
         }
 
 
-        public float[] CheminLePlusCourt(Adresse a, Adresse b)
+        public string[] CheminLePlusCourt(Adresse a, Adresse b)
         {
             var cities = loadCSV("Distances.csv"); // Replace with the actual path to your CSV file
             var cityMap = cities.ToDictionary(c => c.Name);
@@ -139,10 +145,10 @@ namespace FormsProjetS6
             if (endCity.CheminLePlusCourt == int.MaxValue)
             {
                 // No path found between the two addresses
-                return new float[2] { -1, -1 };
+                return new string[3] { "-1", "-1", "" };
             }
 
-            return new float[2] { endCity.CheminLePlusCourt, endCity.TempsLePlusCourt };
+            return new string[3] { ""+endCity.CheminLePlusCourt, ""+endCity.TempsLePlusCourt, endCity.Chemin + " | " + endCity.Name + " | " };
         }
 
         public void Dijkstra(Ville startCity, List<Ville> cities)
@@ -159,12 +165,14 @@ namespace FormsProjetS6
                     Ville voisin = h.Key;
                     int dist = h.Value;
                     int temps = v.VoisinsTemps.ElementAt(i).Value;
+                    string chemin = v.Chemin;
 
                     if (voisin.IsOut) continue;
                     VillesToProcess.Add(voisin);
                     int newDist = v.CheminLePlusCourt + dist;
                     if (newDist < voisin.CheminLePlusCourt)
                     {
+                        voisin.Chemin = chemin + " | " + v.Name;
                         voisin.CheminLePlusCourt = newDist;
                         voisin.TempsLePlusCourt = v.TempsLePlusCourt + temps;
                     }
