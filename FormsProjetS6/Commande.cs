@@ -186,7 +186,7 @@ namespace FormsProjetS6
         /// <returns></returns>
         public string[] CheminLePlusCourt(Adresse a, Adresse b)
         {
-            var cities = loadCSV("Distances.csv"); // Replace with the actual path to your CSV file
+            var cities = loadCSV("Distances.csv");
             var cityMap = cities.ToDictionary(c => c.Name);
 
             if (!cityMap.TryGetValue(a.Ville, out var startCity) || !cityMap.TryGetValue(b.Ville, out var endCity))
@@ -199,7 +199,7 @@ namespace FormsProjetS6
 
             if (endCity.CheminLePlusCourt == int.MaxValue)
             {
-                // No path found between the two addresses
+                
                 return new string[3] { "-1", "-1", "" };
             }
 

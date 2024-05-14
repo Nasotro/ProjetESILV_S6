@@ -152,49 +152,49 @@ namespace FormsProjetS6
             {
                 return "Une ou plusieurs listes sont nulles ou vides. Impossible de calculer les statistiques.";
             }
-            // Total number of commands
+            
             int totalCommands = commandes.Count;
 
-            // Total number of clients
+            
             int totalClients = clients.Count;
 
-            // Total number of employees
+            
             int totalEmployees = salaries.Count;
 
-            // Total number of vehicles
+           
             int totalVehicles = vehicules.Count;
 
-            // Total number of drivers
+           
             int totalDrivers = Chauffeurs.Count;
 
-            // Best client
+            
             Client bestClient = clients.OrderByDescending(c => c.NbCommandes).FirstOrDefault();
 
-            // Busiest driver
+           
             Chauffeur busiestDriver = Chauffeurs.OrderByDescending(c => c.nombreCommandes).FirstOrDefault();
 
-            // Average command price
+            
             float averageCommandPrice = commandes.Average(c => c.Prix);
 
-            // Total revenue
+            
             float totalRevenue = commandes.Sum(c => c.Prix);
 
-            // Average distance per command
+           
             float averageDistance = commandes.Average(c => c.Distance);
 
-            // Average time per command
+            
             float averageTime = commandes.Average(c => c.TempsEnMin);
 
-            // Total distance covered by all commands
+           
             float totalDistance = commandes.Sum(c => c.Distance);
 
-            // Total time taken for all commands
+            
             float totalTime = commandes.Sum(c => c.TempsEnMin);
 
-            // Number of unique clients
+            
             int uniqueClients = clients.Where(c => c.Commandes.Count > 0).Count();
 
-            // Return statistics as a string
+            
             return $"Nombre total de commandes : {totalCommands}\n" +
                    $"Nombre total de clients : {totalClients}\n" +
                    $"Nombre total d'employés : {totalEmployees}\n" +
@@ -292,33 +292,33 @@ namespace FormsProjetS6
         /// <returns></returns>
         public static List<Commande> createCommandes(int n = 20)
         {
-            // A list to store the created Commandes
+            
             List<Commande> commandes = new List<Commande>();
 
-            // A Random object to generate random indices and prices
+            
             Random rand = new Random();
 
-            // Creating Chauffeur objects
+            
             int nb_chauffeurs = salaries.Count / 3;
-            //List<Chauffeur> chauffeurs = salaries.OrderBy(s => rand.Next()).Take(n).Select(s => new Chauffeur(s, rand.Next(10, 20), vehicules[rand.Next(vehicules.Count)])).ToList();
+            
             List<Chauffeur> chauffeurs = salaries.OfType<Chauffeur>().ToList();
 
             Chauffeurs = chauffeurs;
 
-            // Creating 100 Commande objects
+           
             for (int i = 0; i < n; i++)
             {
-                // Generating random addresses
+                
                 Adresse adresseA = new Adresse(Villes[rand.Next(Villes.Count)], "France");
                 Adresse adresseB = new Adresse(Villes[rand.Next(Villes.Count)], "France");
 
-                // Ensuring that adresseA and adresseB are not the same
+                
                 while (adresseA.Ville == adresseB.Ville)
                 {
                     adresseB = new Adresse(Villes[rand.Next(Villes.Count)], "France");
                 }
 
-                // Selecting a random chauffeur and vehicule
+                
                 Chauffeur chauffeur = chauffeurs[rand.Next(chauffeurs.Count)];
                 DateTime date = GenerateRandomDate(new DateTime(2020, 1, 1), DateTime.Now, rand);
                 if (!chauffeur.estDispo(date))
@@ -361,7 +361,7 @@ namespace FormsProjetS6
         {
             Random rnd = new Random();
 
-            int indToProcess = 1; // Start from 0 since we haven't processed any employee yet
+            int indToProcess = 1; 
             List<Salarie> listToProcess = new List<Salarie>() { tete };
 
             while (listToProcess.Count > 0 && indToProcess <= salaries.Count)
@@ -448,23 +448,23 @@ namespace FormsProjetS6
         {
             if (allSalaries == null)
                 allSalaries = salaries;
-            // Base case: if the salarie is null, return all salaries' names
+            
             if (salarie == null)
             {
                 return allSalaries.Select(s => s.noms).ToList();
             }
 
-            // Recursive case: check each salarie in the list
+            
             var names = new List<string>();
             foreach (var s in allSalaries)
             {
-                // If the salarie is not in the subtree of the given salarie, add its name to the list
+                
                 if (!IsInSubtree(s, salarie))
                 {
                     names.Add(s.noms);
                 }
 
-                // Also check the suivants of the salarie
+                
                 names.AddRange(noms_salaries_non_inferieurs(salarie, s.suivants));
             }
 
@@ -523,12 +523,12 @@ namespace FormsProjetS6
         {
             try
             {
-                // Find the boss of the new salarie
+                
                 Salarie boss = FindSalarie(noms_boss);
 
                 if (boss == null)
                 {
-                    // The boss was not found, so return false
+                    
                     return false;
                 }
 
@@ -538,7 +538,7 @@ namespace FormsProjetS6
             }
             catch
             {
-                // An error occurred, so return false
+                
                 return false;
             }
         }

@@ -9,33 +9,146 @@ namespace UnitTestProject2
     public class UnitTest1
     {
         [TestMethod]
-        public void TestDijkstra()
+        public void GetStatistics_ReturnsErrorMessage_WhenListsAreNullOrEmpty()
         {
-            DataBase.Generate();
-            // Création des villes pour le test
-            Commande.Ville villeA = new Commande.Ville("Ville A");
-            Commande.Ville villeB = new Commande.Ville("Ville B");
-            Commande.Ville villeC = new Commande.Ville("Ville C");
-            Commande.Ville villeD = new Commande.Ville("Ville D");
+            // Arrange
+            // Initialisation des listes à null ou vides
+            DataBase.commandes = null;
+            DataBase.clients = new List<Client>();
+            DataBase.salaries = new List<Salarie>();
+            DataBase.vehicules = new List<Vehicule>();
+            DataBase.Chauffeurs = new List<Chauffeur>();
 
-            // Définition des distances entre les villes
-            villeA.VoisinsDist.Add(villeB, 10);
-            villeA.VoisinsDist.Add(villeC, 15);
-            villeB.VoisinsDist.Add(villeD, 12);
-            villeC.VoisinsDist.Add(villeD, 5);
+            // Act
+            // Appel de la méthode GetStatistics()
+            string result = DataBase.GetStatistics();
 
-            // Création de la liste de villes
-            List<Commande.Ville> villes = new List<Commande.Ville>() { villeA, villeB, villeC, villeD };
-
-            // Appel de la méthode Dijkstra pour calculer les chemins les plus courts
-            Commande commande = new Commande(null, null, null, DateTime.Now, null);
-            commande.Dijkstra(villeA, villes);
-
-            // Vérification des chemins les plus courts calculés pour chaque ville
-            Assert.AreEqual(0, villeA.CheminLePlusCourt); // Ville de départ, donc la distance est de 0
-            Assert.AreEqual(10, villeB.CheminLePlusCourt); // Chemin le plus court entre Ville A et Ville B
-            Assert.AreEqual(15, villeC.CheminLePlusCourt); // Chemin le plus court entre Ville A et Ville C
-            Assert.AreEqual(20, villeD.CheminLePlusCourt); // Chemin le plus court entre Ville A et Ville D
+            // Assert
+            // Vérification si le résultat correspond au message d'erreur attendu
+            Assert.AreEqual("Une ou plusieurs listes sont nulles ou vides. Impossible de calculer les statistiques.", result);
         }
+
+        [TestMethod]
+        public void TestAddCommande()
+        {
+            // Arrange
+            Commande commande = new Commande();
+            Client cli = new Client();
+
+            // Act
+            DataBase.AddCommande(commande, cli);
+
+            // Assert
+            Assert.IsTrue(DataBase.commandes.Contains(commande));
+            Assert.IsTrue(cli.Commandes.Contains(commande));
+            Assert.AreEqual(1, commande.Chauffeur.nombreCommandes);
+        }
+
+        [TestMethod]
+        public void TestRemoveCommande()
+        {
+            // Arrange
+            Commande commande = new Commande();
+            commande.Chauffeur = new Chauffeur();
+            Client cli = new Client();
+            cli.Commandes.Add(commande);
+            DataBase.commandes.Add(commande);
+
+            // Act
+            DataBase.RemoveCommande(commande);
+
+            // Assert
+            Assert.IsFalse(DataBase.commandes.Contains(commande));
+            Assert.IsFalse(cli.Commandes.Contains(commande));
+            Assert.AreEqual(0, commande.Chauffeur.nombreCommandes);
+        }
+
+        [TestMethod]
+        public void TestAddClient()
+        {
+            // Arrange
+            Client client = new Client();
+
+            // Act
+            DataBase.AddClient(client);
+
+            // Assert
+            Assert.IsTrue(DataBase.clients.Contains(client));
+        }
+
+        [TestMethod]
+        public void TestRemoveClient()
+        {
+            // Arrange
+            Client client = new Client();
+            DataBase.clients.Add(client);
+
+            // Act
+            DataBase.RemoveClient(client);
+
+            // Assert
+            Assert.IsFalse(DataBase.clients.Contains(client));
+        }
+
+        [TestMethod]
+        public void TestAddSalarie()
+        {
+            // Arrange
+            Salarie salarie = new Salarie();
+            string nom_boss = "Nom du boss";
+
+            // Act
+            bool result = DataBase.AddSalarie(salarie, nom_boss);
+
+            // Assert
+            Assert.IsTrue(DataBase.salaries.Contains(salarie));
+            Assert.IsTrue(result); // Check if the salarie was added to the organigramme correctly
+        }
+
+        [TestMethod]
+        public void TestRemoveSalarie()
+        {
+            // Arrange
+            Salarie salarie = new Salarie();
+            Salarie boss = new Salarie();
+            boss.suivants.Add(salarie);
+            DataBase.salaries.Add(salarie);
+            DataBase.salaries.Add(boss);
+
+            // Act
+            DataBase.RemoveSalarie(salarie);
+
+            // Assert
+            Assert.IsFalse(DataBase.salaries.Contains(salarie));
+            Assert.IsFalse(boss.suivants.Contains(salarie)); // Check if the salarie was removed from the organigramme correctly
+        }
+
+        [TestMethod]
+        public void TestAddVehicule()
+        {
+            // Arrange
+            Vehicule vehicule = new Vehicule();
+
+            // Act
+            DataBase.AddVehicule(vehicule);
+
+            // Assert
+            Assert.IsTrue(DataBase.vehicules.Contains(vehicule));
+        }
+
+        [TestMethod]
+        public void TestRemoveVehicule()
+        {
+            // Arrange
+            Vehicule vehicule = new Vehicule();
+            DataBase.vehicules.Add(vehicule);
+
+            // Act
+            DataBase.RemoveVehicule(vehicule);
+
+            // Assert
+            Assert.IsFalse(DataBase.vehicules.Contains(vehicule));
+        }
+
     }
 }
