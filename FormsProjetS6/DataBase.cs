@@ -12,6 +12,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace FormsProjetS6
 {
+    public interface IStatisticable
+    {
+        void GetStatistics();
+    }
+
     internal static class DataBase
     {
         /// <summary>
